@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "build:watch": "vite build --watch"
   },
   "dependencies": {
     "cors": "^2.8.5",
