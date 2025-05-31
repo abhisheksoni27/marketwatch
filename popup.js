@@ -30,16 +30,16 @@ function renderPositions(open, closed, netPnl) {
   closedList.innerHTML = "";
   open.forEach((pos) => {
     const li = document.createElement("li");
-    li.textContent = `${pos.tradingSymbol}: Qty ${pos.netQty}, P&L ₹${(
+    li.textContent = `${pos.tradingSymbol}: PnL = ${(
       pos.realizedProfit + pos.unrealizedProfit
     ).toFixed(2)}`;
     openList.appendChild(li);
   });
   closed.forEach((pos) => {
     const li = document.createElement("li");
-    li.textContent = `${
-      pos.tradingSymbol
-    }: Realized P&L ₹${pos.realizedProfit.toFixed(2)}`;
+    li.textContent = `${pos.tradingSymbol}: PnL = ${pos.realizedProfit.toFixed(
+      2
+    )}`;
     closedList.appendChild(li);
   });
 }

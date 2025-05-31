@@ -15,25 +15,19 @@
         }
 
         body {
-            font-family: 'Inter', Arial, sans-serif;
+            font-family: 'Raleway', Arial, sans-serif;
             background: var(--bg);
             min-width: 340px;
             margin: 0;
-            padding: 24px 0;
+            padding: 1.5rem;
         }
 
         .card {
-            background: var(--card-bg);
-            border-radius: 18px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            padding: 24px 28px 20px 28px;
-            margin: 0 auto 18px auto;
-            max-width: 340px;
+            padding: 0.5rem;
         }
 
         .header {
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 700;
             margin-bottom: 18px;
             color: var(--primary);
@@ -47,7 +41,7 @@
 
         .pnl {
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin-left: 8px;
         }
 
@@ -66,17 +60,16 @@
             color: #333;
         }
 
+
         ul {
             list-style: none;
-            padding: 0;
-            margin: 0 0 8px 0;
+            padding: 0rem;
+            margin: 0rem;
         }
 
         li {
-            background: #f2f6fb;
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-bottom: 6px;
+            background: var(--bg);
+            margin-bottom: 0.5rem;
             font-size: 0.98rem;
             color: #222;
             display: flex;
@@ -118,16 +111,16 @@
 
         .btn-row {
             display: flex;
-            justify-content: flex-end;
-            margin-top: 18px;
+            /* justify-content: flex-end; */
+            /* margin-top: 18px; */
         }
     </style>
 </head>
 
 <body>
     <div class="card">
-        <div class="header">Dhan Portfolio</div>
-        <div class="pnl-label">Net P&L:
+        <div class="header">Portfolio</div>
+        <div class="pnl-label">Net PnL:
             <span id="net-pnl" class="pnl">--</span>
         </div>
         <div class="section-title">Open Positions</div>

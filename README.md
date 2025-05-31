@@ -3,13 +3,13 @@
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/your-extension-id.svg?logo=google-chrome&label=Chrome%20Web%20Store)](https://chrome.google.com/webstore/detail/your-extension-id)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **The best way to view your Dhan trading portfolio, P&L, and positions right from your browser!**
+> **The best way to view your Dhan trading portfolio, PnL, and positions right from your browser!**
 
 ---
 
 ## ✨ Features
 
-- 🔥 **Instant Net P&L**: See your real-time net profit & loss for the day
+- 🔥 **Instant Net PnL**: See your real-time net profit & loss for the day
 - 📈 **Open & Closed Positions**: Beautifully organized, always up-to-date
 - 🛡️ **Privacy-first**: Your token stays on your device
 - ⚡ **One-click Reload**: Refresh your data instantly

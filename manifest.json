@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Dhan Portfolio Viewer",
   "version": "1.0",
-  "description": "View your open/closed positions and net P&L for the day using Dhan APIs.",
+  "description": "View your open/closed positions and net PnL for the day using Dhan APIs.",
   "permissions": ["storage", "activeTab"],
   "background": {
     "service_worker": "background.js"
