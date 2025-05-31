@@ -182,6 +182,7 @@ body, #root {
     color: var(--text-primary);
     font-size: 0.875rem;
     letter-spacing: -0.025em;
+    padding-right: 0.5rem;
 }
 .position-pnl {
     font-weight: 600;
@@ -198,11 +199,7 @@ body, #root {
     color: var(--danger);
     background: var(--danger-light);
 }
-.position-details {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 400;
-}
+
 .empty-state {
     text-align: center;
     padding: 2rem 1rem;
@@ -417,7 +414,6 @@ const Popup: React.FC = () => {
                     <div className="position-name">{pos.name}</div>
                     <div className={`position-pnl ${pos.pnl >= 0 ? 'positive' : 'negative'}`}>{formatPnL(pos.pnl)}</div>
                   </div>
-                  <div className="position-details">{pos.details}</div>
                 </li>
               ))
             )}
@@ -442,7 +438,6 @@ const Popup: React.FC = () => {
                     <div className="position-name">{pos.name}</div>
                     <div className={`position-pnl ${pos.pnl >= 0 ? 'positive' : 'negative'}`}>{formatPnL(pos.pnl)}</div>
                   </div>
-                  <div className="position-details">{pos.details}</div>
                 </li>
               ))
             )}
