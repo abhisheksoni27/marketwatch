@@ -353,40 +353,63 @@ const Popup: React.FC = () => {
   const fetchPositions = () => {
     setLoading(true);
     setError(null);
-    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
-      chrome.runtime.sendMessage({ type: 'GET_POSITIONS' }, (resp: any) => {
-        if (resp && resp.success) {
-          setData({
-            netPnL: parseFloat((resp.netPnl || '0').replace(/[^\d.-]/g, '')),
-            openPositions: (resp.openPositions || []).map((pos: any) => ({
-              name: pos.tradingSymbol,
-              pnl: (Number(pos.realizedProfit) || 0) + (Number(pos.unrealizedProfit) || 0),
-              details: pos.netQty !== 0
-                ? (pos.tradingSymbol.includes('CE') || pos.tradingSymbol.includes('PE')
-                    ? `Option • Expires ${pos.tradingSymbol.split(' ')[1]}`
-                    : 'Equity • Long Position')
-                : (pos.tradingSymbol.includes('FUT')
+    try {
+      if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+        chrome.runtime.sendMessage({ type: 'GET_POSITIONS' }, (resp: any) => {
+          try {
+            if (resp && resp.success) {
+              setData({
+                netPnL: parseFloat((resp.netPnL || '0').replace(/[^0-9.-]/g, '')),
+                openPositions: (resp.openPositions || []).map((pos: any) => ({
+                  name: pos.tradingSymbol,
+                  pnl: (Number(pos.realizedProfit) || 0) + (Number(pos.unrealizedProfit) || 0),
+                  details: pos.netQty !== 0
+                    ? (pos.tradingSymbol.includes('CE') || pos.tradingSymbol.includes('PE')
+                        ? `Option • Expires ${pos.tradingSymbol.split(' ')[1]}`
+                        : 'Equity • Long Position')
+                    : (pos.tradingSymbol.includes('FUT')
+                        ? 'Future • Closed'
+                        : 'Equity • Sold'),
+                })),
+                closedPositions: (resp.closedPositions || []).map((pos: any) => ({
+                  name: pos.tradingSymbol,
+                  pnl: Number(pos.realizedProfit) || 0,
+                  details: pos.tradingSymbol.includes('FUT')
                     ? 'Future • Closed'
-                    : 'Equity • Sold'),
-            })),
-            closedPositions: (resp.closedPositions || []).map((pos: any) => ({
-              name: pos.tradingSymbol,
-              pnl: Number(pos.realizedProfit) || 0,
-              details: pos.tradingSymbol.includes('FUT')
-                ? 'Future • Closed'
-                : 'Equity • Sold',
-            })),
-          });
-        } else if (resp && resp.error) {
-          setError(resp.error);
-        } else {
-          setError('Unknown error');
-        }
-        setLoading(false);
-      });
-    } else {
-      // Fallback: use sampleData
-      setData(sampleData);
+                    : 'Equity • Sold',
+                })),
+              });
+            } else if (resp && resp.error) {
+              // Only show sample data if the token is 'FAKE' (demo mode)
+              if (resp.error === 'No token' && typeof chrome !== 'undefined' && chrome.storage) {
+                chrome.storage.sync.get(['dhanAccessToken'], (result: any) => {
+                  if (result.dhanAccessToken === 'FAKE') {
+                    setData(sampleData);
+                  } else {
+                    setError('Could not fetch data. Check your token, proxy server, or network.');
+                  }
+                  setLoading(false);
+                });
+                return;
+              } else {
+                setError('Could not fetch data. Check your token, proxy server, or network.');
+              }
+            } else {
+              setError('Unknown error');
+            }
+          } catch (err) {
+            setError('Unexpected error occurred.');
+          } finally {
+            setLoading(false);
+          }
+        });
+      } else {
+        setError('Extension environment not detected.');
+      }
+    } catch (err) {
+      setError('Unexpected error occurred.');
+    } finally {
+      // In case of sync errors
       setLoading(false);
     }
   };
