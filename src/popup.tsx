@@ -26,15 +26,22 @@ body, #root {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
-    min-height: 100vh;
-    padding: 1.5rem;
+    min-height: unset;
+    min-width: 700px;
+    max-width: 900px;
+    width: 900px;
+    height: auto;
+    padding: 1rem 2.5rem;
     background-image: 
         radial-gradient(at 40% 20%, hsla(228,100%,74%,0.1) 0px, transparent 50%),
         radial-gradient(at 80% 0%, hsla(189,100%,56%,0.1) 0px, transparent 50%),
         radial-gradient(at 0% 50%, hsla(355,100%,93%,0.1) 0px, transparent 50%);
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 .container {
-    max-width: 420px;
+    max-width: 860px;
     margin: 0 auto;
 }
 .portfolio-card {
@@ -42,7 +49,7 @@ body, #root {
     backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 24px;
-    padding: 2rem;
+    padding: 1.2rem 2rem;
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
@@ -60,17 +67,17 @@ body, #root {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
 }
 .header h1 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.025em;
 }
 .status-indicator {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     background: var(--success);
     border-radius: 50%;
     box-shadow: 0 0 0 2px var(--success-light);
@@ -84,8 +91,8 @@ body, #root {
     background: linear-gradient(135deg, var(--bg-card) 0%, rgba(99, 102, 241, 0.1) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    padding: 1.1rem;
+    margin-bottom: 1.2rem;
     position: relative;
     overflow: hidden;
 }
@@ -100,20 +107,20 @@ body, #root {
     pointer-events: none;
 }
 .pnl-label {
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     color: var(--text-secondary);
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 .pnl-value {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 700;
     letter-spacing: -0.025em;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 .pnl-value.positive {
     color: var(--success);
@@ -122,20 +129,20 @@ body, #root {
     color: var(--danger);
 }
 .pnl-arrow {
-    font-size: 1.25rem;
+    font-size: 1rem;
     transform: translateY(-2px);
 }
 .section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
 }
 .section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
 }
 .section-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-primary);
     letter-spacing: -0.025em;
@@ -143,9 +150,9 @@ body, #root {
 .section-count {
     background: var(--bg-card);
     color: var(--text-secondary);
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     font-weight: 500;
-    padding: 0.25rem 0.5rem;
+    padding: 0.18rem 0.4rem;
     border-radius: 8px;
     border: 1px solid var(--border);
 }
@@ -155,13 +162,13 @@ body, #root {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 .position-item {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 1rem;
+    padding: 0.7rem;
     transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
@@ -175,19 +182,19 @@ body, #root {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 .position-name {
     font-weight: 600;
     color: var(--text-primary);
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     letter-spacing: -0.025em;
-    padding-right: 0.5rem;
+    padding-right: 0.3rem;
 }
 .position-pnl {
     font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    padding: 0.18rem 0.4rem;
     border-radius: 6px;
     font-variant-numeric: tabular-nums;
 }
@@ -202,19 +209,19 @@ body, #root {
 
 .empty-state {
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 1.2rem 0.7rem;
     color: var(--text-muted);
-    font-size: 0.875rem;
+    font-size: 0.7rem;
 }
 .empty-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
     opacity: 0.5;
 }
 .actions {
     display: flex;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 .btn {
     flex: 1;
@@ -222,8 +229,8 @@ body, #root {
     color: white;
     border: none;
     border-radius: 12px;
-    padding: 0.875rem 1.25rem;
-    font-size: 0.875rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.7rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -266,17 +273,40 @@ body, #root {
 .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 1.5rem 0;
+    margin: 1rem 0;
+}
+@media (max-width: 1200px) {
+    body, #root {
+        min-width: 600px;
+        max-width: 700px;
+        width: 700px;
+    }
+    .container {
+        max-width: 680px;
+    }
+}
+@media (max-width: 800px) {
+    body, #root {
+        min-width: 400px;
+        max-width: 500px;
+        width: 500px;
+    }
+    .container {
+        max-width: 480px;
+    }
 }
 @media (max-width: 480px) {
-    body {
-        padding: 1rem;
+    body, #root {
+        min-width: 320px;
+        max-width: 340px;
+        width: 340px;
+        padding: 0.5rem;
     }
     .portfolio-card {
-        padding: 1.5rem;
+        padding: 0.7rem;
     }
     .pnl-value {
-        font-size: 1.75rem;
+        font-size: 1.1rem;
     }
 }
 `;
