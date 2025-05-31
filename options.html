@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dhan Extension Settings</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            min-width: 300px;
+        }
+
+        label,
+        input {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        button {
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Settings</h2>
+    <label for="access-token">Dhan Access Token</label>
+    <input type="text" id="access-token" placeholder="Paste your Dhan JWT here" />
+    <button id="save-btn">Save</button>
+    <div id="status"></div>
+    <script src="options.js"></script>
+</body>
+
+</html>
