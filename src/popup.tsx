@@ -1,0 +1,418 @@
+import React, { useState } from 'react';
+
+const style = `
+:root {
+    --primary: #6366f1;
+    --primary-light: #a5b4fc;
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border: #475569;
+    --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+body, #root {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 1.5rem;
+    background-image: 
+        radial-gradient(at 40% 20%, hsla(228,100%,74%,0.1) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(189,100%,56%,0.1) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, hsla(355,100%,93%,0.1) 0px, transparent 50%);
+}
+.container {
+    max-width: 420px;
+    margin: 0 auto;
+}
+.portfolio-card {
+    background: var(--bg-secondary);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+.portfolio-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient);
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+.header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+}
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--success-light);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.pnl-section {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(99, 102, 241, 0.1) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.pnl-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.05) 100%);
+    pointer-events: none;
+}
+.pnl-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.pnl-value {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.pnl-value.positive {
+    color: var(--success);
+}
+.pnl-value.negative {
+    color: var(--danger);
+}
+.pnl-arrow {
+    font-size: 1.25rem;
+    transform: translateY(-2px);
+}
+.section {
+    margin-bottom: 2rem;
+}
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+}
+.section-count {
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+.positions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.position-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+.position-item:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-card);
+    border-color: var(--primary);
+}
+.position-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+.position-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    letter-spacing: -0.025em;
+}
+.position-pnl {
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-variant-numeric: tabular-nums;
+}
+.position-pnl.positive {
+    color: var(--success);
+    background: var(--success-light);
+}
+.position-pnl.negative {
+    color: var(--danger);
+    background: var(--danger-light);
+}
+.position-details {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+.empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+.empty-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+.actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+.btn {
+    flex: 1;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    font-family: inherit;
+}
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+.btn:hover::before {
+    left: 100%;
+}
+.btn:hover {
+    background: #5855eb;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+.btn:active {
+    transform: translateY(0);
+}
+.btn.secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+.btn.secondary:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--primary);
+    box-shadow: none;
+}
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 1.5rem 0;
+}
+@media (max-width: 480px) {
+    body {
+        padding: 1rem;
+    }
+    .portfolio-card {
+        padding: 1.5rem;
+    }
+    .pnl-value {
+        font-size: 1.75rem;
+    }
+}
+`;
+
+// Placeholder data structure
+const sampleData = {
+  netPnL: 1600.5,
+  openPositions: [
+    {
+      name: 'NIFTY 29 MAY 25000 CE',
+      pnl: 1550.5,
+      details: 'Call Option • Expires 29 May',
+    },
+    {
+      name: 'RELIANCE',
+      pnl: 350.0,
+      details: 'Equity • Long Position',
+    },
+  ],
+  closedPositions: [
+    {
+      name: 'INDIGO JUN FUT',
+      pnl: -800.0,
+      details: 'Future • Closed Today',
+    },
+    {
+      name: 'TCS',
+      pnl: 500.0,
+      details: 'Equity • Sold Yesterday',
+    },
+  ],
+};
+
+function formatPnL(pnl: number) {
+  const sign = pnl > 0 ? '+' : '';
+  return `${sign}₹${pnl.toFixed(2)}`;
+}
+
+const Popup: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(sampleData);
+
+  const handleReload = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      // TODO: Replace with actual fetch logic
+    }, 1500);
+  };
+
+  const handleSettings = () => {
+    // TODO: Open settings page/modal
+    if (chrome?.runtime?.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    } else {
+      window.open('options.html');
+    }
+  };
+
+  const netPositive = data.netPnL >= 0;
+
+  return (
+    <div className="container">
+      <style>{style}</style>
+      <div className="portfolio-card">
+        <div className="header">
+          <h1>Portfolio</h1>
+          <div className="status-indicator"></div>
+        </div>
+        <div className="pnl-section">
+          <div className="pnl-label">Net P&amp;L</div>
+          <div className={`pnl-value ${netPositive ? 'positive' : 'negative'}`} id="net-pnl">
+            <span className="pnl-arrow">{netPositive ? '↗' : '↘'}</span>
+            {formatPnL(data.netPnL)}
+          </div>
+        </div>
+        <div className="section">
+          <div className="section-header">
+            <div className="section-title">Open Positions</div>
+            <div className="section-count" id="open-count">{data.openPositions.length}</div>
+          </div>
+          <ul className="positions-list" id="open-positions">
+            {data.openPositions.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">📭</div>
+                No open positions
+              </div>
+            ) : (
+              data.openPositions.map((pos, i) => (
+                <li className="position-item" key={i}>
+                  <div className="position-header">
+                    <div className="position-name">{pos.name}</div>
+                    <div className={`position-pnl ${pos.pnl >= 0 ? 'positive' : 'negative'}`}>{formatPnL(pos.pnl)}</div>
+                  </div>
+                  <div className="position-details">{pos.details}</div>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+        <div className="divider"></div>
+        <div className="section">
+          <div className="section-header">
+            <div className="section-title">Closed Positions</div>
+            <div className="section-count" id="closed-count">{data.closedPositions.length}</div>
+          </div>
+          <ul className="positions-list" id="closed-positions">
+            {data.closedPositions.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">📭</div>
+                No closed positions
+              </div>
+            ) : (
+              data.closedPositions.map((pos, i) => (
+                <li className="position-item" key={i}>
+                  <div className="position-header">
+                    <div className="position-name">{pos.name}</div>
+                    <div className={`position-pnl ${pos.pnl >= 0 ? 'positive' : 'negative'}`}>{formatPnL(pos.pnl)}</div>
+                  </div>
+                  <div className="position-details">{pos.details}</div>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+        <div className="actions">
+          <button className="btn" id="reload-btn" onClick={handleReload} disabled={loading}>
+            {loading ? 'Refreshing...' : 'Refresh'}
+          </button>
+          <button className="btn secondary" id="settings-btn" onClick={handleSettings}>
+            Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Popup;
