@@ -45,9 +45,14 @@
    pnpm start
    # Proxy runs at http://localhost:3001
    ```
-3. In Chrome, go to `chrome://extensions` > Enable **Developer mode**
-4. Click **Load unpacked** and select this folder
-5. Open the extension popup, go to **Settings**, and paste your Dhan access token
+3. For automatic extension rebuilds on file changes, run:
+   ```sh
+   pnpm build:watch
+   ```
+   This will keep the dist folder up to date. Refresh the extension in Chrome to see changes.
+4. In Chrome, go to `chrome://extensions` > Enable **Developer mode**
+5. Click **Load unpacked** and select this folder
+6. Open the extension popup, go to **Settings**, and paste your Dhan access token
 
 ---
 
