@@ -8,7 +8,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "dist/index.html"
   },
   "options_page": "options.html"
 }

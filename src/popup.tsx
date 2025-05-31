@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+declare const chrome: any;
 
 const style = `
 :root {
@@ -318,18 +321,60 @@ function formatPnL(pnl: number) {
 const Popup: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(sampleData);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchPositions = () => {
+    setLoading(true);
+    setError(null);
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'GET_POSITIONS' }, (resp: any) => {
+        if (resp && resp.success) {
+          setData({
+            netPnL: parseFloat((resp.netPnl || '0').replace(/[^\d.-]/g, '')),
+            openPositions: (resp.openPositions || []).map((pos: any) => ({
+              name: pos.tradingSymbol,
+              pnl: (Number(pos.realizedProfit) || 0) + (Number(pos.unrealizedProfit) || 0),
+              details: pos.netQty !== 0
+                ? (pos.tradingSymbol.includes('CE') || pos.tradingSymbol.includes('PE')
+                    ? `Option • Expires ${pos.tradingSymbol.split(' ')[1]}`
+                    : 'Equity • Long Position')
+                : (pos.tradingSymbol.includes('FUT')
+                    ? 'Future • Closed'
+                    : 'Equity • Sold'),
+            })),
+            closedPositions: (resp.closedPositions || []).map((pos: any) => ({
+              name: pos.tradingSymbol,
+              pnl: Number(pos.realizedProfit) || 0,
+              details: pos.tradingSymbol.includes('FUT')
+                ? 'Future • Closed'
+                : 'Equity • Sold',
+            })),
+          });
+        } else if (resp && resp.error) {
+          setError(resp.error);
+        } else {
+          setError('Unknown error');
+        }
+        setLoading(false);
+      });
+    } else {
+      // Fallback: use sampleData
+      setData(sampleData);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPositions();
+    // eslint-disable-next-line
+  }, []);
 
   const handleReload = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      // TODO: Replace with actual fetch logic
-    }, 1500);
+    fetchPositions();
   };
 
   const handleSettings = () => {
-    // TODO: Open settings page/modal
-    if (chrome?.runtime?.openOptionsPage) {
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.openOptionsPage) {
       chrome.runtime.openOptionsPage();
     } else {
       window.open('options.html');
@@ -353,6 +398,7 @@ const Popup: React.FC = () => {
             {formatPnL(data.netPnL)}
           </div>
         </div>
+        {error && <div className="empty-state" style={{color: 'var(--danger)'}}>{error}</div>}
         <div className="section">
           <div className="section-header">
             <div className="section-title">Open Positions</div>
